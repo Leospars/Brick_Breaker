@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/startPage_bg"
+
+    android:gravity="top"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:paddingTop="50dp"
+    tools:context=".activity.StartScreenActivity"
+    tools:ignore="HardcodedText" >
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="20sp"
+        android:layout_marginBottom="120dp"
+        android:fontFamily="@font/allerta_stencil"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/baloo_bhai_2"
+        android:text="@string/welcome_message"
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textFontWeight="700"
+        android:textSize="25sp"
+        android:visibility="visible"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/highScoreTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/baloo_bhai_2"
+        android:text="@string/highScore"
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:id="@+id/loginButtonsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal"
+        tools:ignore="HardcodedText">
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="135dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/button_bg"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:contentDescription="LoginIcon"
+            android:text="Login"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+        <Button
+            android:id="@+id/signupButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="180dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/button_bg"
+            android:contentDescription="SignUpIcon"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/startButton2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:contentDescription="StartIcon"
+        app:srcCompat="@drawable/press_start"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

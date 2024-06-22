@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="startPage_bg">#673AB7</color>
+    <color name="textColor">#A0D2FA</color>
+    <color name="blackTint">#99323232</color>
+    <color name="popupPage_bg">#2A7FC1</color>
+    <color name="textWhite">#D7D7D7</color>
+    <color name="warningRed">#590D0D</color>
+</resources>
