@@ -14,11 +14,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.example.brickbreaker.R;
+import org.example.brickbreaker.classes.Account;
 
 public class LoginActivity extends AppCompatActivity {
     Handler handler = new Handler();
     Context context;
     Account account;
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // The Intent that was used to start the Activity is available
+                    Intent intent = result.getData();
+                    // Handle the Intent
+                }
+            });
 
     public LoginActivity() {
         super();
@@ -67,15 +77,4 @@ public class LoginActivity extends AppCompatActivity {
 
         this.finish(); // close the current activity
     }
-
-
-    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // The Intent that was used to start the Activity is available
-                    Intent intent = result.getData();
-                    // Handle the Intent
-                }
-            });
 }

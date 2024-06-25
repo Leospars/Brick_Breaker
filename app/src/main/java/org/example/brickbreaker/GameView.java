@@ -17,7 +17,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import org.example.brickbreaker.activity.Account;
+import org.example.brickbreaker.classes.Account;
 import org.example.brickbreaker.activity.GameOverActivity;
 import org.example.brickbreaker.classes.Brick;
 import org.example.brickbreaker.classes.Velocity;

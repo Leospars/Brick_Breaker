@@ -19,10 +19,10 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //Start Button
-        ImageView startButtonImage = findViewById(R.id.startButton2);
+        ImageView startButtonImage = findViewById(R.id.startButton);
         startButtonImage.setOnClickListener(this::start);
-    }
 
+    }
 
     public void start(View view) {
         Intent intent = new Intent(this, StartScreenActivity.class);

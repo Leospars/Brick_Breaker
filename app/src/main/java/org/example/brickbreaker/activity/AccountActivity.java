@@ -1,37 +1,25 @@
 package org.example.brickbreaker.activity;
 
-import static org.example.brickbreaker.activity.Account.accounts;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import org.example.brickbreaker.classes.Account;
+import org.example.brickbreaker.classes.AccountsDB;
+
+import java.util.List;
 
 public class AccountActivity extends AppCompatActivity {
+    private static final String TAG = "AccountActivity";
     Context context;
     Handler handler = new Handler();
-    Account currentUser = new Account();
 
     public AccountActivity() {
         super();
-    }
-
-    public AccountActivity(Account account) {
-        super();
-        this.currentUser = account;
     }
 
     @Override
@@ -40,52 +28,30 @@ public class AccountActivity extends AppCompatActivity {
 
         //Check if accounts should be updated and update accounts file
         Intent intent = getIntent();
-        currentUser = (getIntent().getSerializableExtra("org.example.brickbreaker.account") != null) ?
-                (Account) getIntent().getSerializableExtra("org.example.brickbreaker.account") : currentUser;
+        Account currentUser = (Account) getIntent().getSerializableExtra("org.example.brickbreaker.account");
+        currentUser = (currentUser != null) ? currentUser : new Account();
         boolean update = intent.getBooleanExtra("org.example.brickbreaker.update", false);
 
         System.out.println("Accessing Database: " + currentUser.getUsername());
         System.out.println("Update: " + update);
 
-        accounts = readAccountsFromAssets();
-
         if (update) {
             //update file and accounts static and set update to false
-            updateAccountsFile(currentUser);
+            AccountsDB.updateAccount(currentUser);
+
             intent.putExtra("org.example.brickbreaker.update", false);
-            accounts = readAccountsFromAssets();
-            System.out.println("Account updated");
-            System.out.println("All Accounts:\n" + Account.allAccounts());
-            System.out.println("File Conetent:\n" + Account.allAccounts());
+            List<Account> accounts = AccountsDB.getAccounts();
+            Log.d(TAG, "Account updated");
+            Log.d(TAG, "All Accounts:\n" + accounts);
         }
         this.finish();
     }
 
-    public void updateAccountsFile(Account account) {
-        try {
-            Account.accounts.add(account);
-            FileOutputStream outputStream = ((Context) this).openFileOutput("Accounts.csv", Context.MODE_PRIVATE);
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
 
-            account.setID(accounts.get(accounts.size() - 1).getID() + 1); //Next ID
-            String data = account.getID() + "," + account.firstName + "," + account.lastName + "," +
-                    account.username + "," + account.getPassword() + "," + account.email + "," +
-                    account.highScore + "\n";
-            bufferedWriter.write(data);
-            bufferedWriter.close();
-
-            System.out.println("Account: " + account + " added to Account.accounts: " + accounts);
-            System.out.println("Accounts in File: " + readAccountsFromAssets());
-
-        } catch (Exception e) {
-            Log.e("GameOverActivity", "Error updating Account.accounts", e);
-        }
-    }
-
-    public ArrayList<Account> readAccountsFromAssets() {
+/*  public List<Account> readAccountsFromAssets() {
         AssetManager assetManager = this.getAssets();
 
-        accounts = new ArrayList<>();
+        accounts = new ArrayList<Account>();
         try {
             InputStream inputStream = assetManager.open("Accounts.csv");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -114,6 +80,6 @@ public class AccountActivity extends AppCompatActivity {
         }
         return accounts;
     }
-
+*/
 
 }

@@ -16,6 +16,10 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import org.example.brickbreaker.GameView;
 import org.example.brickbreaker.R;
+import org.example.brickbreaker.classes.Account;
+import org.example.brickbreaker.classes.AccountsDB;
+
+import java.util.List;
 
 public class GameOverActivity extends AppCompatActivity {
     Context context;
@@ -56,10 +60,10 @@ public class GameOverActivity extends AppCompatActivity {
 
             //delay removing the background and displaying text
             handler.postDelayed(() -> msgTextView.setBackground(null), 3000);
-            msgTextView.setText("Congratulations!\n" + currentUser.username);
+            msgTextView.setText("Congratulations!\n" + currentUser.getUsername());
         } else {
             gameOverTextView.setText("Game Over");
-            msgTextView.setText("Try Again Next Time!\n" + currentUser.username);
+            msgTextView.setText("Try Again Next Time!\n" + currentUser.getUsername());
         }
 
         //Display the score
@@ -99,10 +103,12 @@ public class GameOverActivity extends AppCompatActivity {
             Log.e("GameOverActivity", "Error starting AccountActivity", e);
         }
 
-        if (Account.accounts.isEmpty()) {
+        //Retrieve accounts from database
+        List<Account> accounts = AccountsDB.getAccounts();
+        if (accounts.isEmpty()) {
             leaderBoardData.append("No data found");
         } else {
-            for (Account account : Account.accounts)
+            for (Account account : accounts)
                 leaderBoardData.append(account.getUsername()).append("\t\t\t\t")
                         .append(account.getHighScore()).append("\n");
         }

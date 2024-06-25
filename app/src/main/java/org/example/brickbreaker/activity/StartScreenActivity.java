@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import org.example.brickbreaker.GameView;
 import org.example.brickbreaker.R;
+import org.example.brickbreaker.classes.Account;
 
 
 public class StartScreenActivity extends Activity {
@@ -32,14 +33,14 @@ public class StartScreenActivity extends Activity {
 
         //Start User Signed in
         currentUser = (getIntent().getSerializableExtra("org.example.brickbreaker.account") != null) ?
-                 (Account) getIntent().getSerializableExtra("org.example.brickbreaker.account") : currentUser;
+                (Account) getIntent().getSerializableExtra("org.example.brickbreaker.account") : currentUser;
 
         assert currentUser != null : "Current User is null"; // This is really not possible because currentUser is initialized in the constructor
         //but the IDE doesn't know that and reccomended it.
 
         //Remove Login Buttons
         LinearLayout loginButtons = findViewById(R.id.loginButtonsLayout);
-        if(currentUser.getID() >= 1) {
+        if (currentUser.getID() >= 1) {
             System.out.println(currentUser.getUsername() + " is logged in");
             loginButtons.setVisibility(View.GONE);
         } else {

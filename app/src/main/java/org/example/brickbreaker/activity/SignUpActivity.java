@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.example.brickbreaker.R;
+import org.example.brickbreaker.classes.Account;
+import org.example.brickbreaker.classes.AccountsDB;
+
+import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
     Handler handler = new Handler();
@@ -36,6 +40,10 @@ public class SignUpActivity extends AppCompatActivity {
         findViewById(R.id.signupButton).setOnClickListener(v -> register());
     }
 
+    private String getTextInput(TextInputLayout inputLayout) {
+        return Objects.requireNonNull(inputLayout.getEditText()).getText().toString();
+    }
+
     public void register() {
         TextInputLayout firstNameInput = findViewById(R.id.firstname);
         TextInputLayout lastNameInput = findViewById(R.id.lastname);
@@ -43,10 +51,10 @@ public class SignUpActivity extends AppCompatActivity {
         TextInputLayout usernameInput = findViewById(R.id.username);
         EditText passwordText = findViewById(R.id.password);
 
-        String firstName = firstNameInput.getEditText().getText().toString();
-        String lastName = lastNameInput.getEditText().getText().toString();
-        String email = emailInput.getEditText().getText().toString();
-        String username = usernameInput.getEditText().getText().toString();
+        String firstName = getTextInput(firstNameInput);
+        String lastName = getTextInput(lastNameInput);
+        String email = getTextInput(emailInput);
+        String username = getTextInput(usernameInput);
         String password = passwordText.getText().toString();
 
         //Create Account
@@ -57,29 +65,18 @@ public class SignUpActivity extends AppCompatActivity {
         Account accountFound = Account.searchUsername(this.account.getUsername());
         String alertMessage;
 
-        if (accountFound != null) {
-            alertMessage = "Username is taken";
-        } else if (Account.isValidEmail(email) && Account.isValidPassword(password) && Account.isValidUsername(username)) {
-            alertMessage = "Signup successful";
-        } else {
-            alertMessage = "Login failed";
-        }
+        alertMessage = (accountFound != null) ? "Username is taken" :
+                !Account.isValidPassword(email) ? "Password must be between 8 and 20 characters and contain at least one number" :
+                        !Account.isValidEmail(email) ? "Invalid email format" :
+                                "Signup successful";
 
         //update alert message
         TextView alertTextView = findViewById(R.id.alertTextView);
         alertTextView.setText(alertMessage);
         System.out.println(alertMessage);
 
-        if(alertMessage.equals("Signup successful")) {
-
-            //Update Account.accounts variable
-            Intent accountIntent = new Intent(this, AccountActivity.class);
-            accountIntent.putExtra("org.example.brickbreaker.account", account);
-            accountIntent.putExtra("org.example.brickbreaker.update", true);
-            startActivity(accountIntent);
-
-            //Pause for 3 seconds then close activity
-            handler.postDelayed(this::closeActivity, 3000);
+        if (alertMessage.equals("Signup successful")) {
+            AccountsDB.addAccount(account);
         }
     }
 
