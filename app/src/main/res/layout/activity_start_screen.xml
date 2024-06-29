@@ -99,7 +99,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:contentDescription="StartIcon"
-        app:srcCompat="@drawable/start_button"
+        app:srcCompat="@drawable/start_button2"
         tools:ignore="HardcodedText" />
 
 </LinearLayout>

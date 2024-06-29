@@ -10,13 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.example.brickbreaker.GameView;
 import org.example.brickbreaker.R;
 import org.example.brickbreaker.classes.Account;
 
 
-public class StartScreenActivity extends Activity {
+public class StartScreenActivity extends AppCompatActivity {
 
     static StringBuilder leaderBoardData;
     Account[] accounts = new Account[10];
