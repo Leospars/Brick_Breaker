@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.TextureView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -13,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.checkerframework.checker.units.qual.A;
 import org.example.brickbreaker.R;
 import org.example.brickbreaker.classes.Account;
+import org.example.brickbreaker.classes.AccountsDB;
 
 public class LoginActivity extends AppCompatActivity {
     Handler handler = new Handler();
@@ -52,29 +56,31 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameInput.getEditText().getText().toString();
         String password = passwordText.getText().toString();
 
-        //Update Account.accounts variable
-        handler.removeCallbacksAndMessages(null);
-        Intent accountIntent = new Intent(this, AccountActivity.class);
-        activityResultLauncher.launch(accountIntent); // Use the launcher to start AccountActivity
-
-        //Run game with the account info
+        System.out.println("Accounts registered: " + Account.allAccounts);
         account = Account.searchUsername(username);
         if (account == null) {
-            System.out.println("Username not found");
-            return;
+            setAlert("Username not found");
         } else if (account.getPassword().equals(password)) {
-            System.out.println("Login successful");
-            Intent intent = new Intent(this, MainActivity.class);
-            this.finish(); // close the current activity
+            setAlert("Login successful");
+            closeActivity();
         } else {
-            System.out.println("Login failed");
+            setAlert("Login failed");
         }
+    }
 
-        //Go back to startScreenActivity
+    private void closeActivity() {
+        this.finish();
+
+        //Go back to startScreenActivity with the account info
         Intent startScreenIntent = new Intent(this, StartScreenActivity.class);
         startScreenIntent.putExtra("org.example.brickbreaker.account", account);
-        startActivity(startScreenIntent);
+        handler.postDelayed(() -> startActivity(startScreenIntent), 2000);
+    }
 
-        this.finish(); // close the current activity
+    private void setAlert(String message) {
+        //update alert message
+        TextView alertTextView = findViewById(R.id.alertTextView);
+        alertTextView.setText(message);
+        System.out.println(message);
     }
 }

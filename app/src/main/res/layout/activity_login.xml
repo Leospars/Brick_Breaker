@@ -22,12 +22,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="20sp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="40dp"
             android:fontFamily="@font/baloo_bhai_2"
             android:text="Login"
             android:textAlignment="center"
             android:textColor="@color/textWhite"
             android:textSize="34sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/alertTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:fontFamily="@font/baloo_bhai_2"
+            android:text="@string/alertMessage"
+            android:textAlignment = "textStart"
+            android:textColor="@color/warningRed"
+            android:textSize="20sp"
             tools:ignore="HardcodedText" />
 
         <TableLayout

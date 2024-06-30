@@ -17,8 +17,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import org.example.brickbreaker.classes.Account;
 import org.example.brickbreaker.activity.GameOverActivity;
+import org.example.brickbreaker.classes.Account;
 import org.example.brickbreaker.classes.Brick;
 import org.example.brickbreaker.classes.Velocity;
 
@@ -26,9 +26,12 @@ import java.util.Random;
 
 public class GameView extends View {
 
+    public static boolean userSignedIn = false;
     static int dWidth, dHeight;
     final long UPDATE_MILLIS = 30;
-
+    final float TEXT_SIZE = 80;
+    final int brickRows = 4;
+    final int brickColumns = 6;
     Context context;
     float ballX, ballY;
     Velocity velocity = new Velocity(30, 30);
@@ -38,21 +41,14 @@ public class GameView extends View {
     Paint livesPaint = new Paint();
     Paint brickPaint = new Paint();
     Paint loginPaint = new Paint();
-    final float TEXT_SIZE = 80;
     MediaPlayer mpHitPaddle, mpMiss, mpBreak, mpGameOver, mpWin;
-
     Random random;
     float paddleX, paddleY;
     float oldPaddleX, oldX;
-
     int points = 0;
-    public static boolean userSignedIn = false;
-
     int life = 3;
     Bitmap ball, paddle;
     int ballWidth, ballHeight;
-    final int brickRows = 4;
-    final int brickColumns = 6;
     Brick[] bricks = new Brick[brickRows * brickColumns];
     int numBricks = 0;
     int destroyedBricks = 0;
@@ -86,6 +82,28 @@ public class GameView extends View {
         paddle = Bitmap.createScaledBitmap(paddle, dWidth / 6, dWidth / 20, false);
 
         // Load the sounds
+        // TODO: Allow sound to play when on call
+        /*
+        * import android.content.Context;
+        * import android.media.AudioManager
+        *
+        * AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        * AudioManager.OnAudioFocusChangeListener focusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+                public void onAudioFocusChange(int focusChange) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                        // Stop playback or lower volume, depending on your app's audio requirements
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        // Resume playback or raise volume, depending on your app's audio requirements
+                    }
+                }
+            };
+
+            int result = audioManager.requestAudioFocus(focusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                // You now have audio focus and can start playback
+             }
+            * */
         mpHitPaddle = MediaPlayer.create(context, R.raw.thud);
         mpBreak = MediaPlayer.create(context, R.raw.brickbreak);
         mpMiss = MediaPlayer.create(context, R.raw.swipe_thud);
@@ -215,9 +233,9 @@ public class GameView extends View {
                 int brickYpos = brick.getRow() * brick.getHeight();
 
                 // Check if ball hits the brick
-                boolean ballHitBrickBottom = ((ballX + ballWidth > brickXpos + ballWidth/2.0) && ballX < brickXpos + brick.getWidth() - ballWidth/2.0)
+                boolean ballHitBrickBottom = ((ballX + ballWidth > brickXpos + ballWidth / 2.0) && ballX < brickXpos + brick.getWidth() - ballWidth / 2.0)
                         && ballY >= brickYpos && ballY <= brickYpos + brick.getHeight();
-                boolean ballHitBrickTop = (ballX + ballWidth > brickXpos + ballWidth/2.0 && ballX < brickXpos + brick.getWidth() - ballWidth/2.0)
+                boolean ballHitBrickTop = (ballX + ballWidth > brickXpos + ballWidth / 2.0 && ballX < brickXpos + brick.getWidth() - ballWidth / 2.0)
                         && (ballY + ballHeight > brickYpos && ballY + ballHeight <= brickYpos + brick.getHeight());
                 boolean ballHitBrickSide = ((ballX + ballWidth > brickXpos && ballX + ballWidth < brickXpos + 10) ||
                         (ballX <= brickXpos + brick.getHeight() && ballX > brickXpos + brick.getHeight() - 10))
@@ -230,7 +248,7 @@ public class GameView extends View {
                     System.out.println("Hit bottom: " + ballHitBrickBottom + " Hit top: " + ballHitBrickTop + " Hit side: " + ballHitBrickSide);
                     breakBrick(brick);
 
-                    if(perfectHitBrickEdge){
+                    if (perfectHitBrickEdge) {
                         velocity.setX(-velocity.getX());
                         velocity.setY(-velocity.getY());
                         System.out.println("Brick hit perfect edge");

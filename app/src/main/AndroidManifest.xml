@@ -46,14 +46,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.AccountActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.TAB" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".activity.StartScreenActivity"
             android:exported="true">
             <intent-filter>

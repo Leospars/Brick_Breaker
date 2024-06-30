@@ -1,6 +1,7 @@
 package org.example.brickbreaker.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.example.brickbreaker.GameView;
 import org.example.brickbreaker.R;
 import org.example.brickbreaker.classes.Account;
+import org.example.brickbreaker.classes.AccountsDB;
 
 
 public class StartScreenActivity extends AppCompatActivity {
-
-    static StringBuilder leaderBoardData;
-    Account[] accounts = new Account[10];
-    Account currentUser = new Account("Guest", "User", "guest", "", "", 0);
-
+    Account currentUser = new Account();
+    Context context;
     public StartScreenActivity() {
         super();
     }
@@ -31,17 +30,20 @@ public class StartScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
+        AccountsDB.getAccounts();
 
         //Start User Signed in
-        currentUser = (getIntent().getSerializableExtra("org.example.brickbreaker.account") != null) ?
-                (Account) getIntent().getSerializableExtra("org.example.brickbreaker.account") : currentUser;
+        currentUser = (Account) getIntent().getSerializableExtra("org.example.brickbreaker.account");
+        if (currentUser == null) currentUser = new Account();
 
-        assert currentUser != null : "Current User is null"; // This is really not possible because currentUser is initialized in the constructor
-        //but the IDE doesn't know that and reccomended it.
+        boolean restart = getIntent().getBooleanExtra("StartScreenActivity.restart", false);
+        if (restart) {
+            this.start(new View(context));
+        }
 
         //Remove Login Buttons
         LinearLayout loginButtons = findViewById(R.id.loginButtonsLayout);
-        if (currentUser.getID() >= 1) {
+        if (!currentUser.getUsername().equals("guest")) {
             System.out.println(currentUser.getUsername() + " is logged in");
             loginButtons.setVisibility(View.GONE);
         } else {
@@ -79,10 +81,12 @@ public class StartScreenActivity extends AppCompatActivity {
     public void login(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     public void signUp(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
+        this.finish();
     }
 }
